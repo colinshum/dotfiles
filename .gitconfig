@@ -1,0 +1,6 @@
+[user]
+	name =
+	email = 
+[alias]
+	track = "!git branch --set-upstream-to=origin/`git symbolic-ref --short HEAD`"
+	delete-merged-branches = "!git checkout master && git branch --merged | grep -v '\\*' | xargs -n 1 git branch -d"
