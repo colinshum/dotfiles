@@ -1,0 +1,24 @@
+# Git
+alias ga="git add ."
+alias gc="git commit -m"
+alias gp="git push"
+alias gd="git diff"
+alias gs="git status"
+
+# QoL
+alias reload="source ~/.zshrc"
+alias c="clear"
+alias grep="grep -n --color"
+alias hideicons="defaults write com.apple.finder CreateDesktop false; killall Finder"
+alias showicons="defaults write com.apple.finder CreateDesktop true; killall Finder"
+
+# ZSH
+alias zshrc="vi ~/.zshrc"
+alias ohmyzsh="vi ~/.oh-my-zsh"
+alias aconfig="vi ~/.aliases"
+
+# Dev
+alias dbrebuild="rake db:drop && rake db:setup"
+alias cht.sh="~/bin/cht.sh"
+alias g++14="g++ -std=c++14 -Wall -g"
+

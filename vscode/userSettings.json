@@ -1,0 +1,26 @@
+{
+    "workbench.colorTheme": "Raijū - Slime",
+    "editor.fontSize": 12,
+    "files.autoSave": "onFocusChange",
+    "workbench.statusBar.feedback.visible": false,
+    "workbench.startupEditor": "newUntitledFile",
+    "editor.minimap.enabled": false,
+    //-------- Remote VSCode configuration --------
+
+// Port number to use for connection.
+"remote.port": 52698,
+
+// Launch the server on start up.
+"remote.onstartup": false,
+
+// Address to listen on.
+"remote.host": "127.0.0.1",
+
+// If set to true, error for remote.port already in use won't be shown anymore.
+"remote.dontShowPortAlreadyInUseError": false,
+"files.trimTrailingWhitespace": true,
+
+"terminal.integrated.fontFamily": "MesloLGLDZ Nerd Font Mono"
+}
+
+

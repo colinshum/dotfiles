@@ -1,0 +1,16 @@
+code --install-extension AlanWalk.markdown-toc
+code --install-extension arcticicestudio.nord-visual-studio-code
+code --install-extension joshpeng.sublime-babel-vscode
+code --install-extension k--kato.intellij-idea-keybindings
+code --install-extension mdickin.markdown-shortcuts
+code --install-extension ms-vscode.cpptools
+code --install-extension ms-vscode.Theme-TomorrowKit
+code --install-extension pnp.polacode
+code --install-extension rafaelmaiolla.remote-vscode
+code --install-extension redhat.java
+code --install-extension TobiasTimm.raiju
+code --install-extension vscjava.vscode-java-debug
+code --install-extension vscjava.vscode-java-pack
+code --install-extension vscjava.vscode-java-test
+code --install-extension vscjava.vscode-maven
+code --install-extension vscode-snippet.Snippet
