@@ -9,7 +9,7 @@ echo "Preparing your environment..."
 if test ! $(which brew); then
     echo "Installing Homebrew..."
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-fi 
+fi
 
 echo "Checking for Homebrew Updates..."
 brew update
@@ -39,8 +39,8 @@ CASKS=(
     iterm2
     slack
     visual-studio-code
-    rubymine
 )
+    # rubymine
 
 echo "Installing apps..."
 brew cask install ${CASKS[@]}
@@ -51,15 +51,15 @@ RUBY_GEMS=(
     bundler
 )
 
-echo "Installing Ruby Gems..."
-sudo gem install ${RUBY_GEMS[@]}
+# echo "Installing Ruby Gems..."
+# sudo gem install ${RUBY_GEMS[@]}
 
 # macOS Preferences
 
 echo "Setting macOS Preferences..."
 
 # Set fast key repeat rate
-defaults write NSGlobalDomain KeyRepeat -int 0
+# defaults write NSGlobalDomain KeyRepeat -int 0
 
 # Require password as soon as screensaver or sleep mode starts
 defaults write com.apple.screensaver askForPassword -int 1
@@ -75,14 +75,16 @@ defaults -currentHost write NSGlobalDomain com.apple.mouse.tapBehavior -int 1
 # ZSH
 
 echo "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 # TODO: symlink theme, alias and zshrc
+cp .zshrc ~/.zshrc
+cp .aliases ~/.aliases
 
 # Fonts & iTerm Config
 
 # TODO: Meslo Nerd font, symlink iTerm config
- 
+
 # VSCode
 
 # TODO: copy user preferences, prompt user to install 'code' shortcut, run extension install
-echo "Installation complete"
+echo "Installation complete! 😁"
