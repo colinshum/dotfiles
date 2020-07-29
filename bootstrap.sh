@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 echo "Preparing your environment..."
+echo
 echo "Entering sudo mode... Keeping session alive until bootstrap is over."
+echo
 
 sudo -v
 
@@ -9,83 +11,9 @@ sudo -v
 while true; do sudo -n true; sleep 60; kill -0 "$$" || exit; done 2>/dev/null &
 
 echo "Closing System Preferences..."
+echo
 
 osascript -e 'tell application "System Preferences" to quit'
-
-
-# --------------------------------
-# .gitconfig
-# --------------------------------
-
-grep 'user = GITHUBUSER' ./homedir/.gitconfig > /dev/null 2>&1
-if [[ $? = 0 ]]; then
-    read -r -p "What is your GitHub username? " githubuser
-
-  fullname=`osascript -e "long user name of (system info)"`
-
-  if [[ -n "$fullname" ]];then
-    lastname=$(echo $fullname | awk '{print $2}');
-    firstname=$(echo $fullname | awk '{print $1}');
-  fi
-
-  if [[ -z $lastname ]]; then
-    lastname=`dscl . -read /Users/$(whoami) | grep LastName | sed "s/LastName: //"`
-  fi
-  if [[ -z $firstname ]]; then
-    firstname=`dscl . -read /Users/$(whoami) | grep FirstName | sed "s/FirstName: //"`
-  fi
-  email=`dscl . -read /Users/$(whoami)  | grep EMailAddress | sed "s/EMailAddress: //"`
-
-  if [[ ! "$firstname" ]];then
-    response='n'
-  else
-    echo -e "I see that your full name is $COL_YELLOW$firstname $lastname$COL_RESET"
-    read -r -p "Is this correct? [Y|n] " response
-  fi
-
-  if [[ $response =~ ^(no|n|N) ]];then
-    read -r -p "What is your first name? " firstname
-    read -r -p "What is your last name? " lastname
-  fi
-  fullname="$firstname $lastname"
-
-  echo "Great $fullname, "
-
-  if [[ ! $email ]];then
-    response='n'
-  else
-    echo -e "Your email address is $COL_YELLOW$email$COL_RESET"
-    read -r -p "Is this correct? [Y|n] " response
-  fi
-
-  if [[ $response =~ ^(no|n|N) ]];then
-    read -r -p "What is your email? " email
-    if [[ ! $email ]];then
-      echo "ERROR: you must provide an email to configure .gitconfig"
-      exit 1
-    fi
-  fi
-
-
-  running "replacing items in .gitconfig with your info ($COL_YELLOW$fullname, $email, $githubuser$COL_RESET)"
-
-  # test if gnu-sed or MacOS sed
-
-  sed -i "s/GITHUBFULLNAME/$firstname $lastname/" ./homedir/.gitconfig > /dev/null 2>&1 | true
-  if [[ ${PIPESTATUS[0]} != 0 ]]; then
-    echo
-    echo "looks like you are using MacOS sed rather than gnu-sed, accommodating"
-    sed -i '' "s/GITHUBFULLNAME/$firstname $lastname/" ./homedir/.gitconfig;
-    sed -i '' 's/GITHUBEMAIL/'$email'/' ./homedir/.gitconfig;
-    sed -i '' 's/GITHUBUSER/'$githubuser'/' ./homedir/.gitconfig;
-    ok
-  else
-    echo
-    echo "looks like you are already using gnu-sed."
-    sed -i 's/GITHUBEMAIL/'$email'/' ./homedir/.gitconfig;
-    sed -i 's/GITHUBUSER/'$githubuser'/' ./homedir/.gitconfig;
-  fi
-fi
 
 # --------------------------------
 # Homebrew Installation
@@ -97,17 +25,17 @@ if test ! $(which brew); then
 fi
 
 echo "Checking for Homebrew Updates..."
+echo
 brew update
 
 # --------------------------------
 # Homebrew Taps
 # --------------------------------
 
-tap 'caskroom/cask'
-tap 'caskroom/eid'
-tap 'caskroom/fonts'
-tap 'caskroom/versions'
-tap 'homebrew/bundle'
+brew tap 'homebrew/cask-eid'
+brew tap 'homebrew/cask-fonts'
+brew tap 'homebrew/cask-versions'
+brew tap 'homebrew/bundle'
 
 # --------------------------------
 # Brew Install
@@ -123,8 +51,6 @@ brew install zsh-completions
 # Cask Install
 # --------------------------------
 
-brew install caskroom/cask/brew-cask
-
 CASKS=(
     google-chrome
     iterm2
@@ -137,8 +63,6 @@ CASKS=(
 
 echo "Installing apps..."
 brew cask install ${CASKS[@]}
-
-
 
 # --------------------------------
 # macOS Preferences
@@ -201,16 +125,17 @@ defaults write com.googlecode.iterm2 PromptOnQuit -bool false
 
 # Install theme/fonts for iTerm
 echo "Installing iTerm themes and fonts..."
+echo
 
-open "${HOME}/iterm/Oceanic-Next.itermcolors"
-brew tap homebrew/cask-fonts
+open "./iterm/Oceanic-Next.itermcolors"
 brew cask install font-meslolg-nerd-font
 
-defaults write com.googlecode.iterm2 "Normal Font" -string "MesloLGMDZN-Regular 12";
+defaults write com.googlecode.iterm2 "Normal Font" -string "MesloLGMDZN-Regular 12"
 
 # Install oh-my-zsh
 
 echo "Installing oh-my-zsh..."
+echo
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
 # Install spaceship prompt + symlink
@@ -222,8 +147,10 @@ ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/the
 # Dotfiles
 # ------------------
 echo "Copying dotfiles..."
+echo
 
 cp .zshrc ~/.zshrc
 cp .aliases ~/.aliases
 
 echo "Installation complete! 😁"
+echo
