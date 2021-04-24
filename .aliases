@@ -1,16 +1,26 @@
 # Git
-alias ga="git add ."
+alias ga="git add"
+alias gap="git add -p"
 alias gc="git commit -m"
-alias gp="git push"
+alias gcan="git commit --amend --no-edit"
 alias gd="git diff"
+alias gp="git push"
+alias gpf="git push --force-with-lease"
+alias grb="git rebase"
+alias grba="git rebase --abort"
+alias grbc="git rebase --continue"
+alias grbi="git rebase -i"
 alias gs="git status"
+alias gst="git stash"
 
 # QoL
-alias reload="source ~/.zshrc"
 alias c="clear"
+alias reload="source ~/.zshrc"
 alias grep="grep -n --color"
 alias hideicons="defaults write com.apple.finder CreateDesktop false; killall Finder"
 alias showicons="defaults write com.apple.finder CreateDesktop true; killall Finder"
+alias dr="defaults read"
+
 
 # ZSH
 alias zshrc="vi ~/.zshrc"
@@ -21,4 +31,3 @@ alias aconfig="vi ~/.aliases"
 alias dbrebuild="rake db:drop && rake db:setup"
 alias cht.sh="~/bin/cht.sh"
 alias g++14="g++ -std=c++14 -Wall -g"
-
