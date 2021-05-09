@@ -1,0 +1,3 @@
+[submodule "vendor/cli-ui"]
+	path = vendor/cli-ui
+	url = git@github.com:Shopify/cli-ui.git

@@ -1,0 +1,15 @@
+{
+    "window.zoomLevel": 2,
+    "workbench.colorTheme": "Nord",
+    "workbench.startupEditor": "none",
+    "ruby.codeCompletion": "rcodetools",
+    "ruby.intellisense": "rubyLocate",
+    "ruby.useLanguageServer": true,
+    "ruby.format": "rubocop",
+    "editor.tabSize": 2,
+    "editor.autoClosingBrackets": "always",
+    "editor.tabCompletion": "on",
+    "files.autoSave": "onFocusChange",
+    "files.trimFinalNewlines": true,
+    "workbench.editor.enablePreview": false
+}
