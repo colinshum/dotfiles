@@ -31,6 +31,6 @@ mv ~/Library/Application\ Support/Code/User/settings.json ~/Library/Application\
 mv ~/Library/Application\ Support/Code/User/keybindings.json ~/Library/Application\ Support/Code/User/keybindings_backup.json
 mv ~/Library/Application\ Support/Code/User/snippets/ ~/Library/Application\ Support/Code/User/snippets_backup/
 
-ln -s ./settings.json ~/Library/Application\ Support/Code/User/settings.json
-ln -s ./keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
-ln -s ./snippets/ ~/Library/Application\ Support/Code/User/snippets/
+ln -s ~/dotfiles/config/apps/vscode/settings.json ~/Library/Application\ Support/Code/User/settings.json
+ln -s ~/dotfiles/config/apps/vscode/keybindings.json ~/Library/Application\ Support/Code/User/keybindings.json
+ln -s ~/dotfiles/config/apps/vscode/snippets/ ~/Library/Application\ Support/Code/User/snippets/
