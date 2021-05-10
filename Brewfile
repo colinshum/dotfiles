@@ -27,6 +27,7 @@ brew "rbenv"
 brew "zsh"
 
 # Brew - Other
+brew "switchaudio-osx"
 brew "youtube-dl"
 
 # Cask
