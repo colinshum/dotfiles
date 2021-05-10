@@ -3,9 +3,12 @@
 # ZSH Setup Script
 
 # Oh My Zsh
-sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-source ~/.zshrc
+cd ~
+
+ZSH="$HOME/.oh-my-zsh"
+git clone https://github.com/ohmyzsh/ohmyzsh.git .oh-my-zsh --quiet
+# source ~/.zshrc
 
 # Spaceship Prompt
-git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH_CUSTOM/themes/spaceship-prompt" --depth=1
-ln -s "$ZSH_CUSTOM/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH_CUSTOM/themes/spaceship.zsh-theme" 
+git clone https://github.com/denysdovhan/spaceship-prompt.git "$ZSH/themes/spaceship-prompt" --depth=1 --quiet
+ln -s "$ZSH/themes/spaceship-prompt/spaceship.zsh-theme" "$ZSH/themes/spaceship.zsh-theme"  2>&1 /dev/null

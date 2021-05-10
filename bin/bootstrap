@@ -16,6 +16,14 @@ else
     echo "Xcode CLI tools already installed, proceeding with bootstrap..."
 fi
 
+which -s brew
+if [[ $? != 0 ]] ; then
+    echo "Homebrew not detected, proceeding with installation..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+else
+    echo "Homebrew already installed, proceeding with bootstrap..."
+fi
+
 # mkdir ~/dotfiles
 cd ~/dotfiles
 # git clone https://github.com/colinshum/dotfiles.git

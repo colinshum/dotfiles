@@ -9,14 +9,14 @@ module Dotfiles
       def run
         @tasks = []
 
-        # queue_task("Homebrew") { homebrew }
-        # queue_task("Casks and Brews") { brew_install }
-        # queue_task("Generate SSH Keys") { ssh_gen }
-        # queue_task("Set macOS Defaults") { macos_defaults }
-        # queue_task("ZSH") { zsh }
-        queue_task("Symlink Dotfiles") { dotfiles_symlink }
+        queue_task("Homebrew") { homebrew }
+        queue_task("Casks and Brews") { brew_install }
+        queue_task("Generate SSH Keys") { ssh_gen }
+        queue_task("Set macOS Defaults") { macos_defaults }
+        queue_task("ZSH") { zsh }
         queue_task("App Preferences") { app_prefs }
-        # queue_task("Wrapping Up") { cleanup }
+        queue_task("Symlink Dotfiles") { dotfiles_symlink }
+        queue_task("Wrapping Up") { cleanup }
 
         CLI::UI::StdoutRouter.enable
         run_tasks
@@ -29,7 +29,7 @@ module Dotfiles
           sg = CLI::UI::SpinGroup.new
 
           sg.add("Updating Homebrew") do |spinner|
-            `brew update`
+            system("brew update >/dev/null")
           end
 
           sg.wait
@@ -89,13 +89,15 @@ module Dotfiles
       end
 
       def macos_defaults
-        sg = CLI::UI::SpinGroup.new
+        Dir.chdir(Dotfiles::PROJ_DIR) do
+          sg = CLI::UI::SpinGroup.new
 
-        sg.add("Setting macOS defaults") do |spinner|
-          system("bash ../config/defaults.sh")
+          sg.add("Setting macOS defaults") do |spinner|
+            system("zsh ./bin/defaults.sh")
+          end
+
+          sg.wait
         end
-
-        sg.wait
       end
 
       def zsh
@@ -103,9 +105,7 @@ module Dotfiles
           sg = CLI::UI::SpinGroup.new
 
           sg.add("Installing Oh My ZSH") do |spinner|
-            Dir.chdir(Dotfiles::PROJ_DIR) do
-              `bash ./config/apps/zsh/zsh.sh`
-            end
+            output = `zsh ./config/apps/zsh/zsh.sh`
           end
 
           sg.wait
@@ -117,15 +117,11 @@ module Dotfiles
           sg = CLI::UI::SpinGroup.new
 
           sg.add("Setting up VSCode") do |spinner|
-            Dir.chdir(Dotfiles::PROJ_DIR) do
-              `bash ./config/apps/vscode/vscode.sh`
-            end
+            output = `zsh ./config/apps/vscode/vscode.sh`
           end
 
           sg.add("Setting up iTerm") do |spinner|
-            Dir.chdir(Dotfiles::PROJ_DIR) do
-              `bash ./config/apps/iterm/iterm.sh`
-            end
+            output = `zsh ./config/apps/iterm/iterm.sh`
           end
 
           sg.wait
@@ -145,7 +141,10 @@ module Dotfiles
       end
 
       def cleanup
-        
+        puts CLI::UI.fmt "{{v}} Please restart your terminal session to finish installation."
+        puts CLI::UI.fmt "{{*}} Opening iTerm..."
+        sleep(2)
+        `osascript -e 'tell application "iTerm" to activate'`
       end
     end
   end

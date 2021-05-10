@@ -1,8 +1,8 @@
 # oh-my-zsh
-export ZSH="~/.oh-my-zsh"
+export ZSH="${HOME}/.oh-my-zsh"
 
 # theme
-ZSH_THEME="/themes/spaceship-prompt/spaceship"
+ZSH_THEME="spaceship-prompt/spaceship"
 
 # spaceship
 SPACESHIP_PROMPT_ADD_NEWLINE="true"
