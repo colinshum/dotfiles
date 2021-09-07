@@ -14,6 +14,7 @@ This repo contains my updated macOS dotfiles using [cli-ui](https://github.com/s
 - Install Oh My ZSH
 - Set app preferences for VSCode and iTerm
 - Symlink dotfiles
+- Test
 
 
 ## Demo
