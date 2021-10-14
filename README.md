@@ -18,3 +18,5 @@ This repo contains my updated macOS dotfiles using [cli-ui](https://github.com/s
 
 ## Demo
 ![image](https://user-images.githubusercontent.com/11053683/117598546-066aee00-b116-11eb-820e-6c8abf82eaa4.png)
+
+Testing
