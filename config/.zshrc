@@ -2,7 +2,11 @@
 export ZSH="${HOME}/.oh-my-zsh"
 
 # theme
-ZSH_THEME="spaceship-prompt/spaceship"
+if [ -n "$CODESPACES" ]; then
+  ZSH_THEME="codespaces"
+else
+  ZSH_THEME="spaceship-prompt/spaceship"
+fi
 
 # spaceship
 SPACESHIP_PROMPT_ADD_NEWLINE="true"
@@ -29,3 +33,4 @@ plugins=(
 )
 
 source $ZSH/oh-my-zsh.sh
+export GEM_HOME="$HOME/.gem"
