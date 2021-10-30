@@ -37,7 +37,7 @@ else
     # Linux
     if [ -n "$CODESPACES" ] ; then
         echo "Codespaces environment detected."
-        rm $HOME/.zshrc $HOME/.zshrc-backup
+        mv $HOME/.zshrc $HOME/.zshrc-backup
         ln -s /workspaces/.codespaces/.persistedshare/dotfiles/config/.zshrc $HOME
         ln -s /workspaces/.codespaces/.persistedshare/dotfiles/config/.aliases $HOME
         ln -s /workspaces/.codespaces/.persistedshare/dotfiles/config/.zshenv $HOME
