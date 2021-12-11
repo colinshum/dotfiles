@@ -27,7 +27,7 @@ source ~/.zshenv
 # plugins
 plugins=(
   git
-  osx
+  macos
   vscode
   rails
 )
