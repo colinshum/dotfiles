@@ -32,3 +32,14 @@ alias g++14="g++ -std=c++14 -Wall -g"
 alias ssd="script/server --debug"
 alias gqlschema="bin/dump-graphql-schema"
 alias rt="bin/rails test"
+
+# Codespaces
+# Create a new github/github codespace with custom name
+# Usage: ghcs-github <name>
+ghcs-github() {
+    gh codespace create -r github/github --devcontainer-path .devcontainer/devcontainer.json -m xLargePremiumLinux -d "$1"
+}
+
+# SSH into a codespace
+# Usage: ghcs-ssh <codespace-name>
+alias ghcs-ssh='gh codespace ssh -c'
