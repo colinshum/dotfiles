@@ -1,0 +1,75 @@
+[user]
+	name = Colin Shum
+	email = 11053683+colinshum@users.noreply.github.com
+
+[core]
+	editor = vim
+	pager = delta
+	excludesfile = ~/.config/git/ignore
+
+[init]
+	defaultBranch = main
+
+[pull]
+	rebase = true
+
+[push]
+	default = current
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+[rebase]
+	autoStash = true
+
+[merge]
+	conflictstyle = diff3
+
+[diff]
+	colorMoved = default
+
+[delta]
+	navigate = true
+	line-numbers = true
+	side-by-side = true
+	syntax-theme = Dracula
+
+[interactive]
+	diffFilter = delta --color-only
+
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[credential "https://gist.github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+
+[alias]
+	# Short status
+	s = status -sb
+	# Better log
+	l = log --oneline --graph --decorate
+	# Show last commit
+	last = log -1 HEAD --stat
+	# Amend without editing message
+	amend = commit --amend --no-edit
+	# Undo last commit but keep changes
+	undo = reset HEAD~1 --soft
+	# Show branches sorted by last modified
+	branches = branch --sort=-committerdate
+	# Quick commit all changes
+	ca = commit -a
+	# Quick commit all with message
+	cam = commit -am
+	# Show what's been changed but not committed
+	changed = diff --name-only
+	# Clean up merged branches
+	cleanup = "!git branch --merged | grep -v '\\*\\|main\\|master' | xargs -n 1 git branch -d"
