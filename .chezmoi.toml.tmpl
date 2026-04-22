@@ -1,0 +1,9 @@
+{{- $codespaces := env "CODESPACES" | not | not -}}
+
+{{- if $codespaces }}
+# In Codespaces, dotfiles are cloned to a persisted share directory
+sourceDir = "/workspaces/.codespaces/.persistedshare/dotfiles"
+{{- else }}
+# Standard chezmoi source directory
+sourceDir = "{{ .chezmoi.sourceDir }}"
+{{- end }}
