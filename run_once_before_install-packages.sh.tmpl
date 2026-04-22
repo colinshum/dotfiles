@@ -22,8 +22,26 @@ fi
 echo "Installing apt packages..."
 sudo apt-get install -y -qq \
   ripgrep \
-  fd-find \
-  fzf
+  fd-find
+
+# Install/upgrade fzf (apt version in Codespaces images is often too old for fzf-tab)
+if ! command -v fzf >/dev/null 2>&1 || ! fzf --version | awk 'NR==1 { split($1,v,"."); ok=((v[1]+0)>0 || ((v[1]+0)==0 && (v[2]+0)>=48)); exit(ok?0:1) }'; then
+  echo "Installing fzf..."
+  FZF_VERSION=$(curl -fsSL https://api.github.com/repos/junegunn/fzf/releases/latest | grep '"tag_name"' | cut -d'"' -f4 | sed 's/^v//')
+  FZF_URL="https://github.com/junegunn/fzf/releases/download/v${FZF_VERSION}/fzf-${FZF_VERSION}-linux_amd64.tar.gz"
+  mkdir -p "$HOME/.local/bin"
+  wget -q "$FZF_URL" -O /tmp/fzf.tar.gz
+  tar -xzf /tmp/fzf.tar.gz -C /tmp
+  install -m 0755 /tmp/fzf "$HOME/.local/bin/fzf"
+  rm -f /tmp/fzf.tar.gz /tmp/fzf
+fi
+
+# Install starship prompt
+if ! command -v starship >/dev/null 2>&1; then
+  echo "Installing starship..."
+  mkdir -p "$HOME/.local/bin"
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$HOME/.local/bin"
+fi
 
 # Install zellij (terminal multiplexer)
 if ! command -v zellij >/dev/null 2>&1; then

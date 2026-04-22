@@ -19,8 +19,8 @@ if command -v fzf >/dev/null 2>&1; then
   for _fzf in /opt/homebrew/opt/fzf /usr/local/opt/fzf "$HOME/.fzf" /usr/share/fzf; do
     # Load first matching shell integration bundle.
     if [[ -r "$_fzf/shell/key-bindings.zsh" ]]; then
+      # Do not source fzf's completion.zsh: it rebinds Tab and breaks fzf-tab.
       source "$_fzf/shell/key-bindings.zsh"
-      [[ -r "$_fzf/shell/completion.zsh" ]] && source "$_fzf/shell/completion.zsh"
       break
     fi
   done

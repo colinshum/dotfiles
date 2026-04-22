@@ -11,12 +11,17 @@ _compdump="$XDG_CACHE_HOME/zsh/.zcompdump-${HOST}-${ZSH_VERSION}"
 # Ensure completion cache directory exists.
 mkdir -p "${_compdump:h}"
 
+# Codespaces mounts can present group-writable paths that trip compinit security checks.
+_compinit_flags=(-d "$_compdump")
+[[ -n "${CODESPACES:-}" ]] && _compinit_flags=(-i "${_compinit_flags[@]}")
+
 # First run builds completion dump; later runs skip expensive checks.
 if [[ ! -s "$_compdump" ]]; then
-  compinit -d "$_compdump"
+  compinit "${_compinit_flags[@]}"
 else
-  compinit -C -d "$_compdump"
+  compinit -C "${_compinit_flags[@]}"
 fi
+unset _compinit_flags
 
 # Load fzf-tab immediately after compinit.
 _fzf_tab_plugin="$HOME/Library/Caches/antidote/github.com/Aloxaf/fzf-tab/fzf-tab.plugin.zsh"

@@ -24,7 +24,13 @@ done
 [[ -d "/usr/local/share/zsh/site-functions" ]] && fpath=("/usr/local/share/zsh/site-functions" $fpath)
 # Ensure baseline zsh function paths exist for autoloaded functions like compinit.
 [[ -d "/usr/share/zsh/site-functions" ]] && fpath=("/usr/share/zsh/site-functions" $fpath)
-[[ -d "/usr/share/zsh/$ZSH_VERSION/functions" ]] && fpath=("/usr/share/zsh/$ZSH_VERSION/functions" $fpath)
+[[ -d "/usr/share/zsh/vendor-functions" ]] && fpath=("/usr/share/zsh/vendor-functions" $fpath)
+[[ -d "/usr/share/zsh/vendor-completions" ]] && fpath=("/usr/share/zsh/vendor-completions" $fpath)
+# Some Linux distros (including Codespaces images) ship zsh functions under /usr/share/zsh/functions/*
+for _zfunc_dir in /usr/share/zsh/functions(/N) /usr/share/zsh/functions/*(/N) /usr/share/zsh/functions/*/*(/N); do
+  fpath=("$_zfunc_dir" $fpath)
+done
+unset _zfunc_dir
 
 # Cleanup temporary loop variable.
 unset _sys_dir

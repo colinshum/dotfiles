@@ -35,7 +35,7 @@ Configure dotfiles in [GitHub Settings → Codespaces](https://github.com/settin
 Codespaces will automatically:
 1. Clone your dotfiles
 2. Run `install.sh` to setup chezmoi
-3. Install neovim 0.11.4, eza, bat, ripgrep, fzf, delta, zellij
+3. Install neovim 0.11.4, starship, eza, bat, ripgrep, fzf, delta, zellij
 4. Apply your configuration
 
 ## Usage
