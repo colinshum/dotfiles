@@ -1,0 +1,11 @@
+# Local machine overrides live here.
+# Copy to ~/.config/zsh/local.zsh on a machine where you want custom values.
+
+# Example: machine-specific PATH
+# path=("$HOME/.local/custom/bin" $path)
+
+# Example: machine-specific editor
+# export EDITOR="code --wait"
+
+# Example: private aliases
+# alias workvpn='openvpn --config ~/vpn/work.ovpn'

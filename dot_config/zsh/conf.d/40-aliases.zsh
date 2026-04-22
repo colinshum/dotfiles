@@ -49,6 +49,11 @@ reload() {
   source ~/.zshrc
 }
 
+# Reload with zprof startup profiling enabled for this restart.
+zprof-reload() {
+  ZSH_PROFILE=1 reload
+}
+
 # Config shortcuts.
 # Edit top-level modular zsh loader.
 alias zshrc='$EDITOR ~/.config/zsh/zshrc'

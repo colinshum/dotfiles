@@ -8,6 +8,12 @@ export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
 # Keep zsh config rooted under ~/.config/zsh.
 export ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-$XDG_CONFIG_HOME/zsh}"
 
+# Enable startup profiling only when explicitly requested.
+# Usage: ZSH_PROFILE=1 reload
+if [[ -n "${ZSH_PROFILE:-}" ]]; then
+  zmodload zsh/zprof
+fi
+
 # Load modular config in deterministic order.
 for file in \
   "$ZSH_CONFIG_HOME/conf.d/00-env.zsh" \
@@ -24,4 +30,20 @@ done
 # Extra settings for GitHub Codespaces.
 if [[ -n "${CODESPACES:-}" && -r "$ZSH_CONFIG_HOME/includes/codespaces.zsh" ]]; then
   source "$ZSH_CONFIG_HOME/includes/codespaces.zsh"
+fi
+
+# Optional machine-local overrides (intentionally not tracked).
+if [[ -r "$ZSH_CONFIG_HOME/local.zsh" ]]; then
+  source "$ZSH_CONFIG_HOME/local.zsh"
+fi
+
+# Print zprof output once at first prompt when profiling is enabled.
+if [[ -n "${ZSH_PROFILE:-}" ]]; then
+  autoload -Uz add-zsh-hook
+  _zsh_profile_once() {
+    zprof
+    add-zsh-hook -d precmd _zsh_profile_once
+    unfunction _zsh_profile_once
+  }
+  add-zsh-hook precmd _zsh_profile_once
 fi
