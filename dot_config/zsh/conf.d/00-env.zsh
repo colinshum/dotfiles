@@ -1,5 +1,11 @@
 # Keep PATH/fpath entries unique when prepending.
-typeset -U path PATH fpath FPATH
+typeset -U path PATH fpath
+
+# Guarantee core system paths exist even if parent PATH is broken.
+# This prevents "command not found" for essentials like mkdir/touch/uname.
+for _sys_dir in /usr/bin /bin /usr/sbin /sbin; do
+  (( ${path[(I)$_sys_dir]} )) || path+=("$_sys_dir")
+done
 
 # Prefer user and package-manager binaries before system defaults.
 # User-level binaries (pipx, cargo, custom scripts).
@@ -16,6 +22,12 @@ typeset -U path PATH fpath FPATH
 # Make Homebrew-provided zsh completions discoverable.
 [[ -d "/opt/homebrew/share/zsh/site-functions" ]] && fpath=("/opt/homebrew/share/zsh/site-functions" $fpath)
 [[ -d "/usr/local/share/zsh/site-functions" ]] && fpath=("/usr/local/share/zsh/site-functions" $fpath)
+# Ensure baseline zsh function paths exist for autoloaded functions like compinit.
+[[ -d "/usr/share/zsh/site-functions" ]] && fpath=("/usr/share/zsh/site-functions" $fpath)
+[[ -d "/usr/share/zsh/$ZSH_VERSION/functions" ]] && fpath=("/usr/share/zsh/$ZSH_VERSION/functions" $fpath)
+
+# Cleanup temporary loop variable.
+unset _sys_dir
 
 # Export final PATH to child processes.
 export PATH

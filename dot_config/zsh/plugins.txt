@@ -1,5 +1,7 @@
 # Antidote plugin manifest.
+# fzf-tab must load after compinit but before other completion widgets.
 # Keep syntax highlighting last.
 
 zsh-users/zsh-autosuggestions
+Aloxaf/fzf-tab
 zdharma-continuum/fast-syntax-highlighting
