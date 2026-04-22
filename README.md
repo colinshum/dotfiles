@@ -1,5 +1,7 @@
 # Dotfiles
 
+<img width="1878" height="1345" alt="image" src="https://github.com/user-attachments/assets/ea27a170-2c1d-4015-af16-eec7a35d86a8" />
+
 Personal dotfiles managed with [chezmoi](https://www.chezmoi.io/).
 
 ## Features
