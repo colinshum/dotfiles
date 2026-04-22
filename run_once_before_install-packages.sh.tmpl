@@ -43,6 +43,13 @@ if ! command -v starship >/dev/null 2>&1; then
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y -b "$HOME/.local/bin"
 fi
 
+# Install tree-sitter CLI (required by Neovim treesitter tooling).
+if ! command -v tree-sitter >/dev/null 2>&1; then
+  echo "Installing tree-sitter-cli..."
+  [[ -r "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
+  cargo install --locked tree-sitter-cli
+fi
+
 # Install zellij (terminal multiplexer)
 if ! command -v zellij >/dev/null 2>&1; then
   echo "Installing zellij..."
