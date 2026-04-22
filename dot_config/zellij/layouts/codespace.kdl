@@ -1,0 +1,62 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="dev" focus=true {
+        pane split_direction="vertical" {
+            // Main editor - 50% left
+            pane size="50%" focus=true {
+                name "nvim"
+                command "nvim"
+            }
+            // Right side split - 50%
+            pane split_direction="horizontal" size="50%" {
+                // GitHub Copilot - top right
+                pane size="50%" {
+                    name "copilot"
+                    command "copilot"
+                }
+                // Spare terminal - bottom right
+                pane size="50%" {
+                    name "terminal"
+                }
+            }
+        }
+    }
+
+    tab name="backend" {
+        pane {
+            name "backend"
+        }
+    }
+
+    tab name="testing" {
+        pane split_direction="vertical" {
+            // Test runner - 50% left
+            pane size="50%" {
+                name "test-runner"
+            }
+            // Right side split - 50%
+            pane split_direction="horizontal" size="50%" {
+                // Copilot - top right
+                pane size="50%" {
+                    name "copilot"
+                    command "copilot"
+                }
+                // CI summary - bottom right (suspended until manually activated)
+                pane size="50%" {
+                    name "ci-summary"
+                    command "script/ci-summary"
+                    start_suspended true
+                }
+            }
+        }
+    }
+}

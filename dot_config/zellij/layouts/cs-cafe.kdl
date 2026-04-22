@@ -1,0 +1,112 @@
+layout {
+    default_tab_template {
+        pane size=1 borderless=true {
+            plugin location="zellij:tab-bar"
+        }
+        children
+        pane size=2 borderless=true {
+            plugin location="zellij:status-bar"
+        }
+    }
+
+    tab name="dev" focus=true {
+        pane split_direction="vertical" {
+            // Main editor - 50% left
+            pane size="50%" focus=true {
+                name "nvim"
+                command "nvim"
+            }
+            // Right side split - 50%
+            pane split_direction="horizontal" size="50%" {
+                // GitHub Copilot - top right
+                pane size="50%" {
+                    name "copilot"
+                    command "copilot"
+                }
+                // Spare terminal - bottom right
+                pane size="50%" {
+                    name "terminal"
+                }
+            }
+        }
+    }
+
+    tab name="frontend" {
+        pane split_direction="horizontal" {
+            pane size="50%" {
+                name "dev-server"
+            }
+            pane size="50%" {
+                name "build"
+            }
+        }
+    }
+
+    tab name="pr" {
+        pane split_direction="vertical" {
+            // Current PR details - 50% left
+            pane size="50%" {
+                name "pr-view"
+                command "gh"
+                args "pr" "view"
+                start_suspended true
+            }
+            // Right side split
+            pane split_direction="horizontal" size="50%" {
+                // CI checks - top right
+                pane size="50%" {
+                    name "pr-checks"
+                    command "gh"
+                    args "pr" "checks" "--watch"
+                    start_suspended true
+                }
+                // PR diff - bottom right
+                pane size="50%" {
+                    name "pr-diff"
+                    command "gh"
+                    args "pr" "diff"
+                    start_suspended true
+                }
+            }
+        }
+    }
+
+    tab name="testing" {
+        pane split_direction="vertical" {
+            // Test runner - 50% left
+            pane size="50%" {
+                name "test-runner"
+            }
+            // Right side split - 50%
+            pane split_direction="horizontal" size="50%" {
+                // Copilot - top right
+                pane size="50%" {
+                    name "copilot"
+                    command "copilot"
+                }
+                // CI summary - bottom right (suspended)
+                pane size="50%" {
+                    name "ci-summary"
+                    command "script/ci-summary"
+                    start_suspended true
+                }
+            }
+        }
+    }
+
+    tab name="git" {
+        pane split_direction="vertical" {
+            // Git operations - left side
+            pane size="50%" {
+                name "git-ops"
+            }
+            // Git log - right side
+            pane size="50%" {
+                name "git-log"
+                command "git"
+                args "log" "--oneline" "--graph" "--all" "--decorate"
+                start_suspended true
+            }
+        }
+    }
+}
