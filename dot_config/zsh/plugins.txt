@@ -1,0 +1,5 @@
+# Antidote plugin manifest.
+# Keep syntax highlighting last.
+
+zsh-users/zsh-autosuggestions
+zdharma-continuum/fast-syntax-highlighting

@@ -31,7 +31,7 @@ alias md='mkdir -p'
 
 # Reload shell config. In the sandbox dev shell, do a full in-place restart.
 # Remove any existing alias so function creation is always safe.
-unalias reload 2>/dev/null
+(( $+aliases[reload] )) && unalias reload
 reload() {
   # Exported by scripts/dev-shell; empty outside sandbox.
   local dev_root="${DOTFILES_DEV_ROOT:-}"
@@ -54,6 +54,47 @@ zprof-reload() {
   ZSH_PROFILE=1 reload
 }
 
+# Install or update antidote, then rebuild plugin bundle.
+antidote-install() {
+  # Antidote install path follows active zsh home.
+  local antidote_home="${ZDOTDIR:-$HOME}/.antidote"
+
+  # Update existing checkout or perform first install.
+  if [[ -d "$antidote_home/.git" ]]; then
+    git -C "$antidote_home" pull --ff-only
+  else
+    git clone --depth=1 https://github.com/mattmc3/antidote.git "$antidote_home"
+  fi
+
+  antidote-refresh
+}
+
+# Rebuild static antidote bundle from tracked plugin manifest.
+antidote-refresh() {
+  # Resolve paths from current shell config roots.
+  local antidote_init="${ZDOTDIR:-$HOME}/.antidote/antidote.zsh"
+  local plugins_file="${ZSH_CONFIG_HOME:-${XDG_CONFIG_HOME:-$HOME/.config}/zsh}/plugins.txt"
+  local bundle_file="${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.antidote-bundle.zsh"
+
+  # Antidote must be installed before we can bundle plugins.
+  if [[ ! -r "$antidote_init" ]]; then
+    echo "antidote is not installed (run antidote-install)" >&2
+    return 1
+  fi
+
+  # Plugin manifest must exist to generate a bundle.
+  if [[ ! -r "$plugins_file" ]]; then
+    echo "plugins manifest not found: $plugins_file" >&2
+    return 1
+  fi
+
+  # Load antidote function and generate static bundle.
+  source "$antidote_init"
+  mkdir -p "${bundle_file:h}"
+  antidote bundle <"$plugins_file" >| "$bundle_file"
+  echo "rebuilt $bundle_file"
+}
+
 # Config shortcuts.
 # Edit top-level modular zsh loader.
 alias zshrc='$EDITOR ~/.config/zsh/zshrc'
@@ -61,6 +102,8 @@ alias zshrc='$EDITOR ~/.config/zsh/zshrc'
 alias zaliases='$EDITOR ~/.config/zsh/conf.d/40-aliases.zsh'
 # Edit options/history module quickly.
 alias zoptions='$EDITOR ~/.config/zsh/conf.d/10-options.zsh'
+# Edit tracked antidote plugin manifest.
+alias zplugins='$EDITOR ~/.config/zsh/plugins.txt'
 
 # Git.
 alias g='git'

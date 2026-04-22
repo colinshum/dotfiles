@@ -21,20 +21,30 @@ for file in \
   "$ZSH_CONFIG_HOME/conf.d/20-completion.zsh" \
   "$ZSH_CONFIG_HOME/conf.d/30-integrations.zsh" \
   "$ZSH_CONFIG_HOME/conf.d/40-aliases.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/80-plugins.zsh" \
   "$ZSH_CONFIG_HOME/conf.d/90-prompt.zsh"
 do
   # Only source readable files so missing modules do not hard-fail startup.
-  [[ -r "$file" ]] && source "$file"
+  if [[ -r "$file" ]]; then
+    # Continue loading remaining modules even if one fails to source.
+    if ! source "$file"; then
+      echo "zsh: failed to load module: $file" >&2
+    fi
+  fi
 done
 
 # Extra settings for GitHub Codespaces.
 if [[ -n "${CODESPACES:-}" && -r "$ZSH_CONFIG_HOME/includes/codespaces.zsh" ]]; then
-  source "$ZSH_CONFIG_HOME/includes/codespaces.zsh"
+  if ! source "$ZSH_CONFIG_HOME/includes/codespaces.zsh"; then
+    echo "zsh: failed to load include: $ZSH_CONFIG_HOME/includes/codespaces.zsh" >&2
+  fi
 fi
 
 # Optional machine-local overrides (intentionally not tracked).
 if [[ -r "$ZSH_CONFIG_HOME/local.zsh" ]]; then
-  source "$ZSH_CONFIG_HOME/local.zsh"
+  if ! source "$ZSH_CONFIG_HOME/local.zsh"; then
+    echo "zsh: failed to load local override: $ZSH_CONFIG_HOME/local.zsh" >&2
+  fi
 fi
 
 # Print zprof output once at first prompt when profiling is enabled.

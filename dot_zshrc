@@ -5,12 +5,17 @@ export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
 export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
 # Default XDG state dir when caller did not predefine it.
 export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
-# Default zsh config root to ~/.config/zsh.
-export ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-$XDG_CONFIG_HOME/zsh}"
+# In dev shell, always pin zsh config root to sandbox ~/.config/zsh.
+if [[ -n "${DOTFILES_DEV_SHELL:-}" ]]; then
+  export ZSH_CONFIG_HOME="$XDG_CONFIG_HOME/zsh"
+else
+  # Outside dev shell, honor externally provided override if present.
+  export ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-$XDG_CONFIG_HOME/zsh}"
+fi
 
 # Keep a reload command available even if deeper modules fail to load.
 # Clear any existing alias so the function definition never collides.
-unalias reload 2>/dev/null
+(( $+aliases[reload] )) && unalias reload
 reload() {
   # Exported by scripts/dev-shell; empty outside sandbox usage.
   local dev_root="${DOTFILES_DEV_ROOT:-}"
@@ -30,4 +35,8 @@ reload() {
 }
 
 # Load the modular zsh config if it exists.
-[[ -r "$ZSH_CONFIG_HOME/zshrc" ]] && source "$ZSH_CONFIG_HOME/zshrc"
+if [[ -r "$ZSH_CONFIG_HOME/zshrc" ]]; then
+  if ! source "$ZSH_CONFIG_HOME/zshrc"; then
+    echo "zsh: failed to load main config: $ZSH_CONFIG_HOME/zshrc" >&2
+  fi
+fi

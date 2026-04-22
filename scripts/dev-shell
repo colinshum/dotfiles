@@ -24,6 +24,8 @@ export ZDOTDIR="$TEST_HOME"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_STATE_HOME="$HOME/.local/state"
+# Force sandbox config root so parent-shell exports cannot leak in.
+export ZSH_CONFIG_HOME="$XDG_CONFIG_HOME/zsh"
 export DOTFILES_DEV_SHELL=1
 export DOTFILES_DEV_ROOT="$ROOT_DIR"
 

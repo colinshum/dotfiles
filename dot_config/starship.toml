@@ -1,6 +1,6 @@
 add_newline = false
 command_timeout = 1000
-format = "$custom.dev_shell$directory$git_branch$git_status$cmd_duration$line_break$character"
+format = "${custom.dev_shell}$directory$git_branch$git_status$cmd_duration$line_break$character"
 
 [custom.dev_shell]
 command = "echo DEV-SHELL"
@@ -10,7 +10,7 @@ format = "[$output]($style) "
 
 [directory]
 truncation_length = 4
-truncate_to_repo = false
+truncate_to_repo = true
 
 [git_branch]
 symbol = "git:"
