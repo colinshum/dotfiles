@@ -9,15 +9,8 @@ echo "==> Installing Codespaces packages..."
 # Update apt cache
 sudo apt-get update -qq
 
-# Install neovim from releases (for old glibc compatibility)
-if ! nvim --version 2>/dev/null | grep -q "v0.11"; then
-  echo "Installing neovim v0.11.4..."
-  NVIM_VERSION="v0.11.4"
-  NVIM_URL="https://github.com/neovim/neovim/releases/download/${NVIM_VERSION}/nvim-linux64.tar.gz"
-  wget -q "$NVIM_URL" -O /tmp/nvim.tar.gz
-  sudo tar -xzf /tmp/nvim.tar.gz -C /usr/local --strip-components=1
-  rm /tmp/nvim.tar.gz
-fi
+# Install neovim: Skipped due to Codespaces glibc compatibility issues
+# Uncomment and adjust version if needed in the future
 
 # Install antidote plugin manager
 if [[ ! -d "$HOME/.antidote" ]]; then
