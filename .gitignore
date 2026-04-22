@@ -2,3 +2,5 @@ test-home/.cache/
 test-home/.local/
 test-home/.config/
 test-home/.zshrc
+test-home/.antidote/
+test-home/Library/
