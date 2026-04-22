@@ -1,0 +1,11 @@
+{{- if env "CODESPACES" -}}
+#!/bin/bash
+# Set zsh as default shell in Codespaces
+set -e
+
+if command -v zsh >/dev/null 2>&1; then
+  echo "Setting zsh as default shell..."
+  sudo chsh -s $(which zsh) $(whoami)
+  echo "Default shell set to zsh. Restart your terminal or run 'exec zsh'"
+fi
+{{- end -}}
