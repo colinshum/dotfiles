@@ -1,3 +1,4 @@
 .gitignore
 scripts/**
 test-home/**
+install.sh
