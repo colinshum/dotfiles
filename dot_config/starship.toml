@@ -1,5 +1,5 @@
 add_newline = false
-command_timeout = 1000
+command_timeout = 5000
 format = "${custom.dev_shell}$directory$git_branch$git_status$cmd_duration$line_break$character"
 
 [custom.dev_shell]
