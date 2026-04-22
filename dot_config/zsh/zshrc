@@ -1,0 +1,27 @@
+# Keep this file safe to source directly.
+# Default XDG config dir when not already defined.
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+# Default XDG cache dir when not already defined.
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+# Default XDG state dir when not already defined.
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+# Keep zsh config rooted under ~/.config/zsh.
+export ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-$XDG_CONFIG_HOME/zsh}"
+
+# Load modular config in deterministic order.
+for file in \
+  "$ZSH_CONFIG_HOME/conf.d/00-env.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/10-options.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/20-completion.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/30-integrations.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/40-aliases.zsh" \
+  "$ZSH_CONFIG_HOME/conf.d/90-prompt.zsh"
+do
+  # Only source readable files so missing modules do not hard-fail startup.
+  [[ -r "$file" ]] && source "$file"
+done
+
+# Extra settings for GitHub Codespaces.
+if [[ -n "${CODESPACES:-}" && -r "$ZSH_CONFIG_HOME/includes/codespaces.zsh" ]]; then
+  source "$ZSH_CONFIG_HOME/includes/codespaces.zsh"
+fi

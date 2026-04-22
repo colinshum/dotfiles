@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+TEST_HOME="$ROOT_DIR/test-home"
+
+mkdir -p \
+  "$TEST_HOME/.config" \
+  "$TEST_HOME/.cache/zsh" \
+  "$TEST_HOME/.local/state/zsh"
+
+# Single source of truth: always use repo-managed dotfiles in dot_*
+# and project them into the sandbox home.
+rm -rf \
+  "$TEST_HOME/.zshrc" \
+  "$TEST_HOME/.config/zsh" \
+  "$TEST_HOME/.config/starship.toml"
+ln -s "$ROOT_DIR/dot_zshrc" "$TEST_HOME/.zshrc"
+ln -s "$ROOT_DIR/dot_config/zsh" "$TEST_HOME/.config/zsh"
+ln -s "$ROOT_DIR/dot_config/starship.toml" "$TEST_HOME/.config/starship.toml"
+
+export HOME="$TEST_HOME"
+export ZDOTDIR="$TEST_HOME"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_STATE_HOME="$HOME/.local/state"
+export DOTFILES_DEV_SHELL=1
+export DOTFILES_DEV_ROOT="$ROOT_DIR"
+
+if [[ "${1:-}" == "--cmd" ]]; then
+  shift
+  if [[ $# -eq 0 ]]; then
+    echo "usage: $0 --cmd '<zsh command>'" >&2
+    exit 2
+  fi
+  exec zsh -ilc "$*"
+fi
+
+exec zsh -il

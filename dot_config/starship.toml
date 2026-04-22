@@ -1,0 +1,32 @@
+add_newline = false
+command_timeout = 1000
+format = "$custom.dev_shell$directory$git_branch$git_status$cmd_duration$line_break$character"
+
+[custom.dev_shell]
+command = "echo DEV-SHELL"
+when = '[[ -n "$DOTFILES_DEV_SHELL" ]]'
+style = "bold black bg:yellow"
+format = "[$output]($style) "
+
+[directory]
+truncation_length = 4
+truncate_to_repo = false
+
+[git_branch]
+symbol = "git:"
+format = "[$symbol$branch]($style) "
+style = "bold purple"
+
+[git_status]
+style = "bold yellow"
+format = "([$all_status$ahead_behind]($style) )"
+
+[cmd_duration]
+min_time = 500
+show_milliseconds = true
+format = "took [$duration]($style) "
+
+[character]
+success_symbol = "[>](bold green) "
+error_symbol = "[>](bold red) "
+vimcmd_symbol = "[<](bold yellow) "

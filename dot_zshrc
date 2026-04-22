@@ -1,0 +1,33 @@
+# Thin entrypoint: keep real zsh config in ~/.config/zsh.
+# Default XDG config dir when caller did not predefine it.
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-$HOME/.config}"
+# Default XDG cache dir when caller did not predefine it.
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-$HOME/.cache}"
+# Default XDG state dir when caller did not predefine it.
+export XDG_STATE_HOME="${XDG_STATE_HOME:-$HOME/.local/state}"
+# Default zsh config root to ~/.config/zsh.
+export ZSH_CONFIG_HOME="${ZSH_CONFIG_HOME:-$XDG_CONFIG_HOME/zsh}"
+
+# Keep a reload command available even if deeper modules fail to load.
+# Clear any existing alias so the function definition never collides.
+unalias reload 2>/dev/null
+reload() {
+  # Exported by scripts/dev-shell; empty outside sandbox usage.
+  local dev_root="${DOTFILES_DEV_ROOT:-}"
+
+  # Fallback: infer repo root from a symlinked ~/.zshrc target.
+  if [[ -z "$dev_root" && -L "$HOME/.zshrc" ]]; then
+    dev_root="$(cd -P -- "$(dirname -- "$HOME/.zshrc")/.." && pwd)"
+  fi
+
+  # In dev shell, restart through wrapper to re-project symlinks and env.
+  if [[ -n "${DOTFILES_DEV_SHELL:-}" && -x "$dev_root/scripts/dev-shell" ]]; then
+    exec "$dev_root/scripts/dev-shell"
+  fi
+
+  # Outside dev shell, standard lightweight config reload.
+  source ~/.zshrc
+}
+
+# Load the modular zsh config if it exists.
+[[ -r "$ZSH_CONFIG_HOME/zshrc" ]] && source "$ZSH_CONFIG_HOME/zshrc"
