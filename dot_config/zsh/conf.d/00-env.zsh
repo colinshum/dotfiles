@@ -32,6 +32,20 @@ for _zfunc_dir in /usr/share/zsh/functions(/N) /usr/share/zsh/functions/*(/N) /u
 done
 unset _zfunc_dir
 
+# zsh's own bundled functions (compinit, compaudit, etc.) live in a
+# version-specific directory. compinit re-marks itself for autoload with
+# `autoload -RUz compinit`, which fails with "function definition file not
+# found" if this directory is missing from fpath. Guarantee it is present
+# across common prefixes so completion setup never hard-fails.
+for _zbase in /usr/share/zsh /opt/homebrew/share/zsh /usr/local/share/zsh; do
+  for _zver_dir in \
+    "$_zbase/${ZSH_VERSION}/functions"(/N) \
+    "$_zbase/${ZSH_VERSION}/functions"/*(/N); do
+    fpath=("$_zver_dir" $fpath)
+  done
+done
+unset _zbase _zver_dir
+
 # Cleanup temporary loop variable.
 unset _sys_dir
 
