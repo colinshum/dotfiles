@@ -3,8 +3,11 @@ autoload -Uz compinit
 # Load menu-style completion support.
 zmodload zsh/complist
 
-# Add fzf-tab to fpath before compinit.
-fpath+=("$HOME/Library/Caches/antidote/github.com/Aloxaf/fzf-tab")
+# Add fzf-tab to fpath before compinit (only when the plugin is present so a
+# missing path cannot make compinit fail during first-run setup).
+_fzf_tab_dir="$HOME/Library/Caches/antidote/github.com/Aloxaf/fzf-tab"
+[[ -d "$_fzf_tab_dir" ]] && fpath+=("$_fzf_tab_dir")
+unset _fzf_tab_dir
 
 # Store completion dump in cache, keyed by host and zsh version.
 _compdump="$XDG_CACHE_HOME/zsh/.zcompdump-${HOST}-${ZSH_VERSION}"
@@ -15,13 +18,25 @@ mkdir -p "${_compdump:h}"
 _compinit_flags=(-d "$_compdump")
 [[ -n "${CODESPACES:-}" ]] && _compinit_flags=(-i "${_compinit_flags[@]}")
 
-# First run builds completion dump; later runs skip expensive checks.
-if [[ ! -s "$_compdump" ]]; then
+# Build the completion cache, reusing it on later starts for speed.
+_zsh_run_compinit() {
+  if [[ -s "$_compdump" ]]; then
+    compinit -C "${_compinit_flags[@]}"
+  else
+    compinit "${_compinit_flags[@]}"
+  fi
+}
+
+# Self-heal a stale or corrupt dump. A dump built before new tools (and their
+# completions) were installed can reference function files that no longer match
+# fpath, which otherwise breaks shell startup. On any failure, wipe it and
+# rebuild from scratch once.
+if ! _zsh_run_compinit; then
+  command rm -f "$_compdump"
   compinit "${_compinit_flags[@]}"
-else
-  compinit -C "${_compinit_flags[@]}"
 fi
 unset _compinit_flags
+unset -f _zsh_run_compinit
 
 # Load fzf-tab immediately after compinit.
 _fzf_tab_plugin="$HOME/Library/Caches/antidote/github.com/Aloxaf/fzf-tab/fzf-tab.plugin.zsh"

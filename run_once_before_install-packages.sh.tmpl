@@ -92,6 +92,10 @@ if ! command -v delta >/dev/null 2>&1; then
   rm /tmp/git-delta.deb
 fi
 
+# Drop any completion dump built before these tools were installed so the next
+# shell rebuilds it cleanly with the newly added completions.
+rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"*
+
 echo "==> Codespaces setup complete!"
 echo "Run 'reload' to apply zsh configuration"
 {{- else if (eq .chezmoi.os "darwin") -}}
@@ -137,6 +141,10 @@ brew install \
   direnv \
   tree-sitter-cli \
   gh
+
+# Drop any completion dump built before these tools were installed so the next
+# shell rebuilds it cleanly with the newly added completions.
+rm -f "${XDG_CACHE_HOME:-$HOME/.cache}/zsh/.zcompdump"*
 
 echo "==> macOS setup complete!"
 echo "Run 'reload' to apply zsh configuration"
