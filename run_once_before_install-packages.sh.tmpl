@@ -114,6 +114,12 @@ elif [[ -x /usr/local/bin/brew ]]; then
   eval "$(/usr/local/bin/brew shellenv)"
 fi
 
+# Install antidote plugin manager (cloned to match the zsh loader path).
+if [[ ! -d "$HOME/.antidote" ]]; then
+  echo "Installing antidote..."
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+fi
+
 # Install CLI tools used by the zsh configuration.
 echo "Installing brew formulae..."
 brew install \
@@ -129,14 +135,8 @@ brew install \
   neovim \
   mise \
   direnv \
-  tree-sitter \
+  tree-sitter-cli \
   gh
-
-# Install antidote plugin manager (cloned to match the zsh loader path).
-if [[ ! -d "$HOME/.antidote" ]]; then
-  echo "Installing antidote..."
-  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
-fi
 
 echo "==> macOS setup complete!"
 echo "Run 'reload' to apply zsh configuration"
