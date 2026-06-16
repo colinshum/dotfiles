@@ -94,4 +94,50 @@ fi
 
 echo "==> Codespaces setup complete!"
 echo "Run 'reload' to apply zsh configuration"
+{{- else if (eq .chezmoi.os "darwin") -}}
+#!/bin/bash
+# Install packages on macOS via Homebrew
+set -e
+
+echo "==> Installing macOS packages..."
+
+# Install Homebrew if missing.
+if ! command -v brew >/dev/null 2>&1; then
+  echo "Installing Homebrew..."
+  NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Make brew available in this script regardless of login shell setup.
+if [[ -x /opt/homebrew/bin/brew ]]; then
+  eval "$(/opt/homebrew/bin/brew shellenv)"
+elif [[ -x /usr/local/bin/brew ]]; then
+  eval "$(/usr/local/bin/brew shellenv)"
+fi
+
+# Install CLI tools used by the zsh configuration.
+echo "Installing brew formulae..."
+brew install \
+  starship \
+  eza \
+  bat \
+  ripgrep \
+  fd \
+  fzf \
+  zoxide \
+  git-delta \
+  zellij \
+  neovim \
+  mise \
+  direnv \
+  tree-sitter \
+  gh
+
+# Install antidote plugin manager (cloned to match the zsh loader path).
+if [[ ! -d "$HOME/.antidote" ]]; then
+  echo "Installing antidote..."
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+fi
+
+echo "==> macOS setup complete!"
+echo "Run 'reload' to apply zsh configuration"
 {{- end -}}

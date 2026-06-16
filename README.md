@@ -29,6 +29,11 @@ brew install chezmoi
 chezmoi init --apply colinshum/dotfiles
 ```
 
+On first apply, chezmoi automatically installs Homebrew (if missing) and the CLI
+tools used by this config (starship, eza, bat, ripgrep, fd, fzf, zoxide,
+git-delta, zellij, neovim, mise, direnv, tree-sitter, gh) plus the antidote
+plugin manager.
+
 ### GitHub Codespaces
 
 Configure dotfiles in [GitHub Settings → Codespaces](https://github.com/settings/codespaces):
